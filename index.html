@@ -1449,7 +1449,7 @@
     
     <!-- Alert Banner -->
     <div class="alert-banner" id="alertBanner">
-        <strong>Upozornění:</strong> V pátek 16.1.2026 nejsme v ambulanci přítomni. Zástup: MUDr. Kateřina Fialová, 1. patro polikliniky.
+        <strong>Upozornění:</strong> <span id="alertText">V pátek 16.1.2026 nejsme v ambulanci přítomni. Zástup: MUDr. Kateřina Fialová, 1. patro polikliniky.</span>
         <button class="close-btn" onclick="document.getElementById('alertBanner').style.display='none'">
             <i data-lucide="x"></i>
         </button>
@@ -2018,6 +2018,32 @@
                 document.location.href = "/admin/";
             });
         }
+        
+        // Load dynamic content from CMS data files
+        async function loadCMSData() {
+            try {
+                // Load alert banner
+                const alertResponse = await fetch('/_data/alert.json');
+                if (alertResponse.ok) {
+                    const alertData = await alertResponse.json();
+                    const alertBanner = document.getElementById('alertBanner');
+                    const alertText = document.getElementById('alertText');
+                    if (alertBanner && alertText) {
+                        if (alertData.show) {
+                            alertBanner.style.display = 'block';
+                            alertText.textContent = alertData.text;
+                        } else {
+                            alertBanner.style.display = 'none';
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log('CMS data not loaded:', error);
+            }
+        }
+        
+        // Load CMS data on page load
+        loadCMSData();
     </script>
 </body>
 </html>
