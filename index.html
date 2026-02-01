@@ -2023,19 +2023,22 @@
         async function loadCMSData() {
             try {
                 // Load alert banner
-                const alertResponse = await fetch('/_data/alert.json');
+                const alertResponse = await fetch('_data/alert.json?' + Date.now());
                 if (alertResponse.ok) {
                     const alertData = await alertResponse.json();
+                    console.log('Alert data loaded:', alertData);
                     const alertBanner = document.getElementById('alertBanner');
                     const alertText = document.getElementById('alertText');
                     if (alertBanner && alertText) {
-                        if (alertData.show) {
+                        if (alertData.show === true) {
                             alertBanner.style.display = 'block';
                             alertText.textContent = alertData.text;
                         } else {
                             alertBanner.style.display = 'none';
                         }
                     }
+                } else {
+                    console.log('Alert fetch failed:', alertResponse.status);
                 }
             } catch (error) {
                 console.log('CMS data not loaded:', error);
