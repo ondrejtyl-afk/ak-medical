@@ -1,0 +1,40 @@
+backend:
+  name: git-gateway
+  branch: main
+
+locale: 'cs'
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "settings"
+    label: "Nastavení webu"
+    files:
+      - name: "alert"
+        label: "Upozornění (banner)"
+        file: "_data/alert.json"
+        fields:
+          - { name: "show", label: "Zobrazit upozornění", widget: "boolean", default: false }
+          - { name: "text", label: "Text upozornění", widget: "string" }
+      
+      - name: "contact"
+        label: "Kontaktní údaje"
+        file: "_data/contact.json"
+        fields:
+          - { name: "phone", label: "Telefon", widget: "string", default: "272 928 875" }
+          - { name: "email", label: "E-mail", widget: "string", default: "praktickylekar.akmedical@gmail.com" }
+          - { name: "address", label: "Adresa", widget: "text" }
+      
+      - name: "hours"
+        label: "Ordinační doba"
+        file: "_data/hours.json"
+        fields:
+          - name: "days"
+            label: "Dny"
+            widget: "list"
+            fields:
+              - { name: "day", label: "Den", widget: "string" }
+              - { name: "morning", label: "Dopoledne", widget: "string" }
+              - { name: "afternoon", label: "Odpoledne", widget: "string" }
+          - { name: "note", label: "Poznámka", widget: "text", required: false }

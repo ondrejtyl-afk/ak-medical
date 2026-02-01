@@ -1,0 +1,10 @@
+{
+  "days": [
+    { "day": "Pondělí", "morning": "8:00 - 13:00", "afternoon": "—" },
+    { "day": "Úterý", "morning": "8:00 - 14:00", "afternoon": "—" },
+    { "day": "Středa", "morning": "8:00 - 13:00", "afternoon": "—" },
+    { "day": "Čtvrtek", "morning": "8:00 - 13:00 *", "afternoon": "13:00 - 18:00" },
+    { "day": "Pátek", "morning": "8:00 - 12:00", "afternoon": "—" }
+  ],
+  "note": "* Čtvrtek dopoledne: pouze vyšetření pro PSSZ a lázeňskou péči (po předchozím objednání, není přítomna sestra, netelefonujte)"
+}
