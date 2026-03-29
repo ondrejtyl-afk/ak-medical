@@ -28,7 +28,9 @@ export default async (req) => {
   return new Response(JSON.stringify(result), {
     headers: {
       "Content-Type": "application/json",
-      "Cache-Control": "no-cache",
+      "Cache-Control": "no-store, no-cache, must-revalidate",
+      "CDN-Cache-Control": "no-store",
+      "Netlify-CDN-Cache-Control": "no-store",
       "Access-Control-Allow-Origin": "*",
     },
   });

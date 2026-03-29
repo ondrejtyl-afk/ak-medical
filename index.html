@@ -2022,7 +2022,7 @@
         
         async function loadSettings() {
             try {
-                const res = await fetch('/api/settings');
+                const res = await fetch('/api/settings?t=' + Date.now());
                 if (!res.ok) return;
                 const data = await res.json();
 
