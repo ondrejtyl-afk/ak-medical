@@ -1,6 +1,7 @@
 import { getStore } from "@netlify/blobs";
+import { getUser } from "@netlify/identity";
 
-export default async (req, context) => {
+export default async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
@@ -16,9 +17,8 @@ export default async (req, context) => {
     return new Response("Method not allowed", { status: 405 });
   }
 
-  const identity = context.clientContext?.identity;
-  const user = context.clientContext?.user;
-  if (!identity || !user) {
+  const user = await getUser();
+  if (!user) {
     return new Response("Unauthorized", { status: 401 });
   }
 
