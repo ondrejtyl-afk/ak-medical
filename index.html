@@ -2020,30 +2020,28 @@
             });
         }
         
-        // Load dynamic content from CMS data files
-        async function loadCMSData() {
+        async function loadSettings() {
             try {
-                const alertResponse = await fetch('_data/alert.json?' + Date.now());
-                if (alertResponse.ok) {
-                    const alertData = await alertResponse.json();
-                    const alertBanner = document.getElementById('alertBanner');
-                    const alertText = document.getElementById('alertText');
-                    if (alertBanner && alertText) {
-                        if (alertData.show === true) {
-                            alertBanner.style.display = 'block';
-                            alertText.textContent = alertData.text;
-                        } else {
-                            alertBanner.style.display = 'none';
-                        }
+                const res = await fetch('/api/settings');
+                if (!res.ok) return;
+                const data = await res.json();
+
+                const alertBanner = document.getElementById('alertBanner');
+                const alertText = document.getElementById('alertText');
+                if (alertBanner && alertText && data.alert) {
+                    if (data.alert.show === true && data.alert.text) {
+                        alertText.textContent = data.alert.text;
+                        alertBanner.style.display = 'block';
+                    } else {
+                        alertBanner.style.display = 'none';
                     }
                 }
-            } catch (error) {
-                console.log('CMS data not loaded:', error);
+            } catch (e) {
+                // Settings API unavailable, banner stays hidden
             }
         }
-        
-        // Load CMS data on page load
-        loadCMSData();
+
+        loadSettings();
     </script>
 </body>
 </html>
