@@ -4,11 +4,11 @@ const DEFAULTS = {
   alert: { show: false, text: "" },
   hours: {
     days: [
-      { day: "Pondělí", hours: "12:00 – 18:00", note: "18:00 – 19:00 (pouze telefonické a e-mailové konzultace)" },
-      { day: "Úterý", hours: "8:00 – 13:00", note: "13:00 – 14:00 (pouze telefonické a e-mailové konzultace)" },
-      { day: "Středa", hours: "8:00 – 13:00", note: "13:00 – 14:00 (pouze telefonické a e-mailové konzultace)" },
-      { day: "Čtvrtek", hours: "8:00 – 13:00", note: "13:00 – 14:00 (pouze telefonické a e-mailové konzultace)" },
-      { day: "Pátek", hours: "8:00 – 13:00", note: "13:00 – 14:00 (pouze telefonické a e-mailové konzultace)" },
+      { day: "Pondělí", hours: "12:00 – 18:00", note: "18:00 – 19:00 (pouze telefonicky a e-mailem)" },
+      { day: "Úterý", hours: "8:00 – 13:00", note: "13:00 – 14:00 (pouze telefonicky a e-mailem)" },
+      { day: "Středa", hours: "8:00 – 13:00", note: "13:00 – 14:00 (pouze telefonicky a e-mailem)" },
+      { day: "Čtvrtek", hours: "8:00 – 13:00", note: "13:00 – 14:00 (pouze telefonicky a e-mailem)" },
+      { day: "Pátek", hours: "8:00 – 13:00", note: "13:00 – 14:00 (pouze telefonicky a e-mailem)" },
     ],
     footnote: "* Pouze telefonické a e-mailové konzultace",
     validFrom: "Platná od 1. 4. 2026",
