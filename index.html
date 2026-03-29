@@ -1454,6 +1454,21 @@
             <i data-lucide="x"></i>
         </button>
     </div>
+    <script>
+    (function(){
+        fetch('/api/settings?t=' + Date.now())
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                var b = document.getElementById('alertBanner');
+                var t = document.getElementById('alertText');
+                if (b && t && data.alert && data.alert.show === true && data.alert.text) {
+                    t.textContent = data.alert.text;
+                    b.style.display = 'block';
+                }
+            })
+            .catch(function(){});
+    })();
+    </script>
     
     <!-- Header -->
     <header>
@@ -2020,28 +2035,7 @@
             });
         }
         
-        async function loadSettings() {
-            try {
-                const res = await fetch('/api/settings?t=' + Date.now());
-                if (!res.ok) return;
-                const data = await res.json();
-
-                const alertBanner = document.getElementById('alertBanner');
-                const alertText = document.getElementById('alertText');
-                if (alertBanner && alertText && data.alert) {
-                    if (data.alert.show === true && data.alert.text) {
-                        alertText.textContent = data.alert.text;
-                        alertBanner.style.display = 'block';
-                    } else {
-                        alertBanner.style.display = 'none';
-                    }
-                }
-            } catch (e) {
-                // Settings API unavailable, banner stays hidden
-            }
-        }
-
-        loadSettings();
+        // Alert banner is loaded by inline script near the banner element
     </script>
 </body>
 </html>
