@@ -1459,12 +1459,14 @@
         fetch('/api/settings?t=' + Date.now())
             .then(function(r){ return r.json(); })
             .then(function(data){
-                // Alert banner
+                // Alert banner (top) + hours section alert
                 var b = document.getElementById('alertBanner');
                 var t = document.getElementById('alertText');
-                if (b && t && data.alert && data.alert.show === true && data.alert.text) {
-                    t.textContent = data.alert.text;
-                    b.style.display = 'block';
+                var ha = document.getElementById('hoursAlert');
+                var hat = document.getElementById('hoursAlertText');
+                if (data.alert && data.alert.show === true && data.alert.text) {
+                    if (b && t) { t.textContent = data.alert.text; b.style.display = 'block'; }
+                    if (ha && hat) { hat.textContent = data.alert.text; ha.style.display = 'flex'; }
                 }
                 // Hours
                 if (data.hours) {
@@ -1775,6 +1777,10 @@
                         <p>
                             <i data-lucide="alert-triangle"></i>
                             Na všechna vyšetření se prosím objednávejte předem!
+                        </p>
+                        <p id="hoursAlert" style="display:none; margin-top:10px; padding-top:10px; border-top:1px solid #F59E0B;">
+                            <i data-lucide="info"></i>
+                            <span id="hoursAlertText"></span>
                         </p>
                     </div>
                     
