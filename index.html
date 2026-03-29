@@ -1485,7 +1485,12 @@
                     }
                     if (h.footnote) {
                         var fn = document.getElementById('hoursFootnote');
-                        if (fn) fn.textContent = h.footnote;
+                        if (fn) {
+                            var ft = h.footnote
+                                .replace(/([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/g, '<a href="mailto:$1">$1</a>')
+                                .replace(/(\d{3})\s*(\d{3})\s*(\d{3})/g, '<a href="tel:+420$1$2$3">$1 $2 $3</a>');
+                            fn.innerHTML = ft;
+                        }
                     }
                     if (h.days && h.days.length) {
                         var tbody = document.querySelector('.hours-table tbody');
