@@ -1,10 +1,10 @@
 {
   "days": [
-    { "day": "Pondělí", "morning": "12:00 - 18:00", "afternoon": "18:00 - 19:00 (pouze telefonické a mailové konzultace)" },
-    { "day": "Úterý", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a mailové konzultace)" },
-    { "day": "Středa", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a mailové konzultace)" },
-    { "day": "Čtvrtek", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a mailové konzultace)" },
-    { "day": "Pátek", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a mailové konzultace)" }
+    { "day": "Pondělí", "morning": "12:00 - 18:00", "afternoon": "18:00 - 19:00 (pouze telefonické a e-mailové konzultace)" },
+    { "day": "Úterý", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a e-mailové konzultace)" },
+    { "day": "Středa", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a e-mailové konzultace)" },
+    { "day": "Čtvrtek", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a e-mailové konzultace)" },
+    { "day": "Pátek", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a e-mailové konzultace)" }
   ],
   "note": ""
 }
