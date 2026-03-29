@@ -728,6 +728,13 @@
             font-size: 15px;
         }
         
+        .hours-table td small {
+            display: block;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+        
         .hours-table tr:last-child td {
             border-bottom: none;
         }
@@ -1485,9 +1492,11 @@
                             var html = '';
                             for (var i = 0; i < h.days.length; i++) {
                                 var d = h.days[i];
+                                var note = d.note || '—';
+                                note = note.replace(/\s*(\([^)]+\))/, '<br><small>$1</small>');
                                 html += '<tr><td><strong>' + d.day + '</strong></td>'
                                     + '<td>' + (d.hours || '—') + '</td>'
-                                    + '<td>' + (d.note || '—') + '</td></tr>';
+                                    + '<td>' + note + '</td></tr>';
                             }
                             tbody.innerHTML = html;
                         }
@@ -1796,27 +1805,27 @@
                             <tr>
                                 <td><strong>Pondělí</strong></td>
                                 <td>12:00 - 18:00</td>
-                                <td>18:00 - 19:00 (pouze telefonicky a e-mailem)</td>
+                                <td>18:00 - 19:00<br><small>(pouze telefonicky a e-mailem)</small></td>
                             </tr>
                             <tr>
                                 <td><strong>Úterý</strong></td>
                                 <td>8:00 - 13:00</td>
-                                <td>13:00 - 14:00 (pouze telefonicky a e-mailem)</td>
+                                <td>13:00 - 14:00<br><small>(pouze telefonicky a e-mailem)</small></td>
                             </tr>
                             <tr>
                                 <td><strong>Středa</strong></td>
                                 <td>8:00 - 13:00</td>
-                                <td>13:00 - 14:00 (pouze telefonicky a e-mailem)</td>
+                                <td>13:00 - 14:00<br><small>(pouze telefonicky a e-mailem)</small></td>
                             </tr>
                             <tr>
                                 <td><strong>Čtvrtek</strong></td>
                                 <td>8:00 - 13:00</td>
-                                <td>13:00 - 14:00 (pouze telefonicky a e-mailem)</td>
+                                <td>13:00 - 14:00<br><small>(pouze telefonicky a e-mailem)</small></td>
                             </tr>
                             <tr>
                                 <td><strong>Pátek</strong></td>
                                 <td>8:00 - 13:00</td>
-                                <td>13:00 - 14:00 (pouze telefonicky a e-mailem)</td>
+                                <td>13:00 - 14:00<br><small>(pouze telefonicky a e-mailem)</small></td>
                             </tr>
                         </tbody>
                     </table>
