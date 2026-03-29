@@ -1457,11 +1457,37 @@
         fetch('/api/settings?t=' + Date.now())
             .then(function(r){ return r.json(); })
             .then(function(data){
+                // Alert banner
                 var b = document.getElementById('alertBanner');
                 var t = document.getElementById('alertText');
                 if (b && t && data.alert && data.alert.show === true && data.alert.text) {
                     t.textContent = data.alert.text;
                     b.style.display = 'block';
+                }
+                // Hours
+                if (data.hours) {
+                    var h = data.hours;
+                    if (h.validFrom) {
+                        var vf = document.getElementById('hoursValidFrom');
+                        if (vf) vf.textContent = h.validFrom;
+                    }
+                    if (h.footnote) {
+                        var fn = document.getElementById('hoursFootnote');
+                        if (fn) fn.textContent = h.footnote;
+                    }
+                    if (h.days && h.days.length) {
+                        var tbody = document.querySelector('.hours-table tbody');
+                        if (tbody) {
+                            var html = '';
+                            for (var i = 0; i < h.days.length; i++) {
+                                var d = h.days[i];
+                                html += '<tr><td><strong>' + d.day + '</strong></td>'
+                                    + '<td>' + (d.hours || '—') + '</td>'
+                                    + '<td>' + (d.note || '—') + '</td></tr>';
+                            }
+                            tbody.innerHTML = html;
+                        }
+                    }
                 }
             })
             .catch(function(){});
@@ -1738,7 +1764,7 @@
         <div class="container">
             <div class="section-header">
                 <h2>Ordinační doba</h2>
-                <p>Platná od 1. 4. 2026</p>
+                <p id="hoursValidFrom">Platná od 1. 4. 2026</p>
             </div>
             
             <div class="hours-content">
@@ -1787,7 +1813,7 @@
                         </tbody>
                     </table>
                     
-                    <div class="hours-note">
+                    <div class="hours-note" id="hoursFootnote">
                         * Pouze telefonické a e-mailové konzultace
                     </div>
                 </div>
