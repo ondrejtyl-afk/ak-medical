@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
     <title>Administrace | AK Medical</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -22,11 +21,69 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            gap: 24px;
+            gap: 20px;
         }
 
-        .login-screen h1 { font-size: 24px; color: #1E293B; }
-        .login-screen p { color: #64748B; }
+        .login-box {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+            padding: 32px;
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .login-box h1 {
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-box h1::before {
+            content: '';
+            width: 32px;
+            height: 32px;
+            background: #2563EB;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .form-group { margin-bottom: 16px; }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .login-error {
+            color: #DC2626;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 12px;
+            display: none;
+        }
 
         .btn {
             padding: 12px 24px;
@@ -38,26 +95,12 @@
             transition: all 0.2s;
         }
 
-        .btn-primary {
-            background: #2563EB;
-            color: white;
-        }
-
+        .btn-primary { background: #2563EB; color: white; width: 100%; }
         .btn-primary:hover { background: #1E40AF; }
+        .btn-primary:disabled { background: #93C5FD; cursor: wait; }
 
-        .btn-secondary {
-            background: #E2E8F0;
-            color: #475569;
-        }
-
+        .btn-secondary { background: #E2E8F0; color: #475569; }
         .btn-secondary:hover { background: #CBD5E1; }
-
-        .btn-danger {
-            background: #EF4444;
-            color: white;
-        }
-
-        .btn-danger:hover { background: #DC2626; }
 
         .admin-panel { display: none; }
 
@@ -85,14 +128,6 @@
             border-radius: 8px;
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            color: #64748B;
-        }
-
         .content { max-width: 720px; margin: 32px auto; padding: 0 20px; }
 
         .card {
@@ -110,12 +145,7 @@
             margin-bottom: 20px;
         }
 
-        .card-header h2 {
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .card-header h2 { font-size: 18px; }
 
         .badge {
             font-size: 11px;
@@ -127,9 +157,8 @@
         .badge-on { background: #DCFCE7; color: #166534; }
         .badge-off { background: #FEE2E2; color: #991B1B; }
 
-        .form-group { margin-bottom: 16px; }
-
-        .form-group label {
+        .form-group-admin { margin-bottom: 16px; }
+        .form-group-admin label {
             display: block;
             font-size: 14px;
             font-weight: 600;
@@ -137,19 +166,18 @@
             margin-bottom: 6px;
         }
 
-        .form-group input[type="text"],
-        .form-group textarea {
+        .form-group-admin input[type="text"],
+        .form-group-admin textarea {
             width: 100%;
             padding: 10px 14px;
             border: 1px solid #E2E8F0;
             border-radius: 8px;
             font-size: 15px;
             font-family: inherit;
-            transition: border-color 0.2s;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group-admin input:focus,
+        .form-group-admin textarea:focus {
             outline: none;
             border-color: #2563EB;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
@@ -162,22 +190,10 @@
             padding: 12px 0;
         }
 
-        .toggle-row label {
-            font-size: 15px;
-            font-weight: 500;
-        }
+        .toggle-row label { font-size: 15px; font-weight: 500; }
 
-        .toggle {
-            position: relative;
-            width: 48px;
-            height: 26px;
-        }
-
-        .toggle input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .toggle { position: relative; width: 48px; height: 26px; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
 
         .toggle-slider {
             position: absolute;
@@ -191,51 +207,15 @@
         .toggle-slider::before {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
-            left: 3px;
-            bottom: 3px;
+            width: 20px; height: 20px;
+            left: 3px; bottom: 3px;
             background: white;
             border-radius: 50%;
             transition: 0.2s;
         }
 
-        .toggle input:checked + .toggle-slider {
-            background: #2563EB;
-        }
-
-        .toggle input:checked + .toggle-slider::before {
-            transform: translateX(22px);
-        }
-
-        .hours-row {
-            display: grid;
-            grid-template-columns: 100px 1fr 1fr;
-            gap: 10px;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #F1F5F9;
-        }
-
-        .hours-row:last-of-type { border-bottom: none; }
-
-        .hours-row span {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .hours-row input {
-            padding: 8px 10px;
-            border: 1px solid #E2E8F0;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
-        }
-
-        .hours-row input:focus {
-            outline: none;
-            border-color: #2563EB;
-        }
+        .toggle input:checked + .toggle-slider { background: #2563EB; }
+        .toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
 
         .hours-labels {
             display: grid;
@@ -251,11 +231,29 @@
             letter-spacing: 0.5px;
         }
 
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
+        .hours-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr;
+            gap: 10px;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #F1F5F9;
         }
+
+        .hours-row:last-of-type { border-bottom: none; }
+        .hours-row span { font-weight: 600; font-size: 14px; }
+
+        .hours-row input {
+            padding: 8px 10px;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .hours-row input:focus { outline: none; border-color: #2563EB; }
+
+        .actions { display: flex; gap: 12px; margin-top: 20px; }
 
         .toast {
             position: fixed;
@@ -273,61 +271,50 @@
             z-index: 1000;
         }
 
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
+        .toast.show { transform: translateY(0); opacity: 1; }
         .toast.error { background: #991B1B; }
 
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
         @media (max-width: 640px) {
-            .hours-row { grid-template-columns: 70px 1fr 1fr; gap: 6px; }
-            .hours-labels { grid-template-columns: 70px 1fr 1fr; gap: 6px; }
+            .hours-row, .hours-labels { grid-template-columns: 70px 1fr 1fr; gap: 6px; }
             .top-bar { padding: 12px 16px; }
             .content { padding: 0 12px; margin: 16px auto; }
+            .login-box { margin: 0 16px; }
         }
     </style>
 </head>
 <body>
-    <!-- Login screen -->
+    <!-- Login -->
     <div class="login-screen" id="loginScreen">
-        <h1>AK Medical</h1>
-        <p>Pro přístup do administrace se přihlaste</p>
-        <button class="btn btn-primary" onclick="netlifyIdentity.open('login')">Přihlásit se</button>
+        <div class="login-box">
+            <h1>AK Medical</h1>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>Přihlašovací jméno</label>
+                    <input type="text" id="loginUser" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Heslo</label>
+                    <input type="password" id="loginPass" autocomplete="current-password" required>
+                </div>
+                <div class="login-error" id="loginError"></div>
+                <button type="submit" class="btn btn-primary" id="loginBtn">Přihlásit se</button>
+            </form>
+        </div>
     </div>
 
-    <!-- Admin panel -->
+    <!-- Admin -->
     <div class="admin-panel" id="adminPanel">
         <div class="top-bar">
             <h1>AK Medical Admin</h1>
-            <div class="user-info">
-                <span id="userEmail"></span>
-                <button class="btn btn-secondary" onclick="logout()" style="padding:8px 16px;font-size:13px">Odhlásit</button>
-            </div>
+            <button class="btn btn-secondary" onclick="logout()" style="padding:8px 16px;font-size:13px">Odhlásit</button>
         </div>
 
         <div class="content">
-            <!-- Alert banner -->
             <div class="card">
                 <div class="card-header">
                     <h2>Upozornění (banner)</h2>
                     <span class="badge" id="alertBadge">Vypnuto</span>
                 </div>
-
                 <div class="toggle-row">
                     <label>Zobrazit upozornění na webu</label>
                     <label class="toggle">
@@ -335,43 +322,35 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-
-                <div class="form-group" style="margin-top:12px">
+                <div class="form-group-admin" style="margin-top:12px">
                     <label>Text upozornění</label>
                     <input type="text" id="alertText" placeholder="Např.: V pátek 4.4. nejsme v ambulanci přítomni...">
                 </div>
-
                 <div class="actions">
-                    <button class="btn btn-primary" onclick="save()">Uložit změny</button>
+                    <button class="btn btn-primary" onclick="save()" style="width:auto">Uložit změny</button>
                 </div>
             </div>
 
-            <!-- Hours -->
             <div class="card">
                 <div class="card-header">
                     <h2>Ordinační doba</h2>
                 </div>
-
-                <div class="form-group">
+                <div class="form-group-admin">
                     <label>Platnost</label>
                     <input type="text" id="hoursValidFrom" placeholder="Např.: Platná od 1. 4. 2026">
                 </div>
-
                 <div class="hours-labels">
                     <span>Den</span>
                     <span>Ordinace</span>
                     <span>Konzultace</span>
                 </div>
-
                 <div id="hoursRows"></div>
-
-                <div class="form-group" style="margin-top:16px">
+                <div class="form-group-admin" style="margin-top:16px">
                     <label>Poznámka pod tabulkou</label>
                     <input type="text" id="hoursFootnote" placeholder="Např.: * Pouze telefonické a mailové konzultace">
                 </div>
-
                 <div class="actions">
-                    <button class="btn btn-primary" onclick="save()">Uložit změny</button>
+                    <button class="btn btn-primary" onclick="save()" style="width:auto">Uložit změny</button>
                 </div>
             </div>
         </div>
@@ -380,128 +359,160 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        const DAYS = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek'];
-        let currentUser = null;
+        var DAYS = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek'];
+        var authToken = sessionStorage.getItem('admin_token') || '';
 
         function showToast(msg, isError) {
-            const t = document.getElementById('toast');
+            var t = document.getElementById('toast');
             t.textContent = msg;
             t.className = 'toast show' + (isError ? ' error' : '');
-            setTimeout(() => t.className = 'toast', 3000);
+            setTimeout(function(){ t.className = 'toast'; }, 3000);
         }
 
         function updateAlertBadge() {
-            const on = document.getElementById('alertShow').checked;
-            const badge = document.getElementById('alertBadge');
+            var on = document.getElementById('alertShow').checked;
+            var badge = document.getElementById('alertBadge');
             badge.textContent = on ? 'Zapnuto' : 'Vypnuto';
             badge.className = 'badge ' + (on ? 'badge-on' : 'badge-off');
         }
 
         function renderHoursRows(days) {
-            const container = document.getElementById('hoursRows');
+            var container = document.getElementById('hoursRows');
             container.innerHTML = '';
-            DAYS.forEach((dayName, i) => {
-                const data = days?.[i] || { day: dayName, hours: '', note: '' };
-                container.innerHTML += `
-                    <div class="hours-row">
-                        <span>${dayName}</span>
-                        <input type="text" data-field="hours" data-idx="${i}" value="${data.hours || ''}">
-                        <input type="text" data-field="note" data-idx="${i}" value="${data.note || ''}">
-                    </div>`;
+            DAYS.forEach(function(dayName, i) {
+                var data = (days && days[i]) || { day: dayName, hours: '', note: '' };
+                container.innerHTML +=
+                    '<div class="hours-row">' +
+                    '<span>' + dayName + '</span>' +
+                    '<input type="text" data-field="hours" data-idx="' + i + '" value="' + (data.hours || '') + '">' +
+                    '<input type="text" data-field="note" data-idx="' + i + '" value="' + (data.note || '') + '">' +
+                    '</div>';
             });
         }
 
-        async function loadSettings() {
-            try {
-                const res = await fetch('/api/settings');
-                const data = await res.json();
+        function login(e) {
+            e.preventDefault();
+            var btn = document.getElementById('loginBtn');
+            var errEl = document.getElementById('loginError');
+            btn.disabled = true;
+            btn.textContent = 'Přihlašuji...';
+            errEl.style.display = 'none';
 
-                document.getElementById('alertShow').checked = data.alert?.show || false;
-                document.getElementById('alertText').value = data.alert?.text || '';
-                updateAlertBadge();
-
-                document.getElementById('hoursValidFrom').value = data.hours?.validFrom || '';
-                document.getElementById('hoursFootnote').value = data.hours?.footnote || '';
-                renderHoursRows(data.hours?.days);
-            } catch (e) {
-                renderHoursRows([]);
-                showToast('Chyba při načítání dat', true);
-            }
-        }
-
-        async function save() {
-            const token = currentUser?.token?.access_token;
-            if (!token) {
-                showToast('Nejste přihlášen/a', true);
-                return;
-            }
-
-            const days = DAYS.map((dayName, i) => ({
-                day: dayName,
-                hours: document.querySelector(`[data-field="hours"][data-idx="${i}"]`)?.value || '',
-                note: document.querySelector(`[data-field="note"][data-idx="${i}"]`)?.value || '',
-            }));
-
-            const payload = {
-                alert: {
-                    show: document.getElementById('alertShow').checked,
-                    text: document.getElementById('alertText').value,
-                },
-                hours: {
-                    days,
-                    footnote: document.getElementById('hoursFootnote').value,
-                    validFrom: document.getElementById('hoursValidFrom').value,
-                },
-            };
-
-            try {
-                const res = await fetch('/api/save-settings', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token,
-                    },
-                    body: JSON.stringify(payload),
-                });
-
-                if (!res.ok) throw new Error(res.statusText);
-                showToast('Změny uloženy! Projeví se okamžitě.');
-            } catch (e) {
-                showToast('Chyba při ukládání: ' + e.message, true);
-            }
+            fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user: document.getElementById('loginUser').value,
+                    pass: document.getElementById('loginPass').value
+                })
+            })
+            .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, data: d }; }); })
+            .then(function(res) {
+                if (res.ok && res.data.token) {
+                    authToken = res.data.token;
+                    sessionStorage.setItem('admin_token', authToken);
+                    showAdmin();
+                } else {
+                    errEl.textContent = res.data.error || 'Chyba přihlášení';
+                    errEl.style.display = 'block';
+                }
+            })
+            .catch(function() {
+                errEl.textContent = 'Chyba spojení se serverem';
+                errEl.style.display = 'block';
+            })
+            .finally(function() {
+                btn.disabled = false;
+                btn.textContent = 'Přihlásit se';
+            });
         }
 
         function logout() {
-            netlifyIdentity.logout();
-            currentUser = null;
+            authToken = '';
+            sessionStorage.removeItem('admin_token');
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('loginScreen').style.display = 'flex';
         }
 
-        function showAdmin(user) {
-            currentUser = user;
+        function showAdmin() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
-            document.getElementById('userEmail').textContent = user.email;
             loadSettings();
         }
 
-        // Netlify Identity
-        netlifyIdentity.on('init', (user) => {
-            if (user) showAdmin(user);
-        });
+        function loadSettings() {
+            fetch('/api/settings?t=' + Date.now())
+                .then(function(r){ return r.json(); })
+                .then(function(data) {
+                    document.getElementById('alertShow').checked = (data.alert && data.alert.show) || false;
+                    document.getElementById('alertText').value = (data.alert && data.alert.text) || '';
+                    updateAlertBadge();
+                    document.getElementById('hoursValidFrom').value = (data.hours && data.hours.validFrom) || '';
+                    document.getElementById('hoursFootnote').value = (data.hours && data.hours.footnote) || '';
+                    renderHoursRows(data.hours && data.hours.days);
+                })
+                .catch(function() {
+                    renderHoursRows([]);
+                    showToast('Chyba při načítání dat', true);
+                });
+        }
 
-        netlifyIdentity.on('login', (user) => {
-            showAdmin(user);
-            netlifyIdentity.close();
-        });
+        function save() {
+            if (!authToken) { showToast('Nejste přihlášen/a', true); return; }
 
-        netlifyIdentity.on('logout', () => {
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'flex';
-        });
+            var days = DAYS.map(function(dayName, i) {
+                return {
+                    day: dayName,
+                    hours: (document.querySelector('[data-field="hours"][data-idx="' + i + '"]') || {}).value || '',
+                    note: (document.querySelector('[data-field="note"][data-idx="' + i + '"]') || {}).value || ''
+                };
+            });
 
-        netlifyIdentity.init();
+            var payload = {
+                alert: {
+                    show: document.getElementById('alertShow').checked,
+                    text: document.getElementById('alertText').value
+                },
+                hours: {
+                    days: days,
+                    footnote: document.getElementById('hoursFootnote').value,
+                    validFrom: document.getElementById('hoursValidFrom').value
+                }
+            };
+
+            fetch('/api/save-settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + authToken
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(function(r) {
+                if (!r.ok) throw new Error(r.status === 401 ? 'Platnost přihlášení vypršela' : 'Chyba serveru');
+                return r.json();
+            })
+            .then(function() { showToast('Změny uloženy! Projeví se okamžitě na webu.'); })
+            .catch(function(e) {
+                showToast('Chyba: ' + e.message, true);
+                if (e.message.indexOf('vypršela') !== -1) logout();
+            });
+        }
+
+        // Auto-login if token exists in session
+        if (authToken) {
+            fetch('/api/save-settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + authToken
+                },
+                body: JSON.stringify({})
+            }).then(function(r) {
+                if (r.ok) showAdmin();
+                else logout();
+            }).catch(function() { logout(); });
+        }
     </script>
 </body>
 </html>

@@ -1,5 +1,15 @@
 import { getStore } from "@netlify/blobs";
-import { getUser } from "@netlify/identity";
+import { createHmac } from "crypto";
+
+function verifyToken(token, secret) {
+  if (!token || !secret) return false;
+  const [payload, sig] = token.split(".");
+  if (!payload || !sig) return false;
+  const expected = createHmac("sha256", secret).update(payload).digest("hex");
+  if (sig !== expected) return false;
+  if (Date.now() > Number(payload)) return false;
+  return true;
+}
 
 export default async (req) => {
   if (req.method === "OPTIONS") {
@@ -17,9 +27,15 @@ export default async (req) => {
     return new Response("Method not allowed", { status: 405 });
   }
 
-  const user = await getUser();
-  if (!user) {
-    return new Response("Unauthorized", { status: 401 });
+  const authHeader = req.headers.get("authorization") || "";
+  const token = authHeader.replace("Bearer ", "");
+  const secret = process.env.ADMIN_SECRET;
+
+  if (!verifyToken(token, secret)) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   const body = await req.json();
