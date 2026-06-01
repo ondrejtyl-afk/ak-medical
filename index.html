@@ -200,6 +200,105 @@
             opacity: 1;
         }
         
+        /* Alert Modal */
+        .alert-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 2000;
+            animation: alertModalFadeIn 0.25s ease;
+        }
+        
+        .alert-modal-box {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 460px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: alertModalSlideUp 0.3s ease;
+        }
+        
+        .alert-modal-top {
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+            padding: 28px 32px;
+            text-align: center;
+            color: white;
+        }
+        
+        .alert-modal-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+        }
+        
+        .alert-modal-icon .lucide {
+            width: 34px;
+            height: 34px;
+            stroke-width: 2;
+        }
+        
+        .alert-modal-top h2 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .alert-modal-body {
+            padding: 28px 32px 32px;
+            text-align: center;
+        }
+        
+        .alert-modal-body p {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 24px;
+        }
+        
+        .alert-modal-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        
+        .alert-modal-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        @keyframes alertModalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes alertModalSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 480px) {
+            .alert-modal-top { padding: 24px; }
+            .alert-modal-body { padding: 24px; }
+            .alert-modal-top h2 { font-size: 20px; }
+        }
+        
         /* Header */
         header {
             background: var(--white);
@@ -1462,19 +1561,38 @@
             <i data-lucide="x"></i>
         </button>
     </div>
+    
+    <!-- Alert Modal -->
+    <div class="alert-modal-overlay" id="alertModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="alertModalTitle">
+        <div class="alert-modal-box">
+            <div class="alert-modal-top">
+                <div class="alert-modal-icon"><i data-lucide="alert-triangle"></i></div>
+                <h2 id="alertModalTitle">Důležité upozornění</h2>
+            </div>
+            <div class="alert-modal-body">
+                <p id="alertModalText"></p>
+                <button class="alert-modal-btn" type="button" id="alertModalClose">Rozumím</button>
+            </div>
+        </div>
+    </div>
     <script>
     (function(){
         fetch('/api/settings?t=' + Date.now())
             .then(function(r){ return r.json(); })
             .then(function(data){
-                // Alert banner (top) + hours section alert
+                // Alert banner (top) + modal. Box v sekci ordinační doby zůstává statický.
                 var b = document.getElementById('alertBanner');
                 var t = document.getElementById('alertText');
-                var ha = document.getElementById('hoursAlert');
-                var hat = document.getElementById('hoursAlertText');
                 if (data.alert && data.alert.show === true && data.alert.text) {
                     if (b && t) { t.textContent = data.alert.text; b.style.display = 'block'; }
-                    if (ha && hat) { hat.textContent = data.alert.text; ha.style.display = 'flex'; }
+                    // Modal s upozorněním (stejný text, zobrazí se při každém otevření stránky)
+                    var m = document.getElementById('alertModal');
+                    var mt = document.getElementById('alertModalText');
+                    if (m && mt) {
+                        mt.textContent = data.alert.text;
+                        m.style.display = 'flex';
+                        if (window.lucide) { lucide.createIcons(); }
+                    }
                 }
                 // Hours
                 if (data.hours) {
@@ -1510,6 +1628,23 @@
                 }
             })
             .catch(function(){});
+        
+        // Zavření modálu (jen modal; lišta i sekce zůstávají)
+        function closeAlertModal() {
+            var m = document.getElementById('alertModal');
+            if (m) m.style.display = 'none';
+        }
+        var closeBtn = document.getElementById('alertModalClose');
+        if (closeBtn) closeBtn.addEventListener('click', closeAlertModal);
+        var overlay = document.getElementById('alertModal');
+        if (overlay) {
+            overlay.addEventListener('click', function(e){
+                if (e.target === overlay) closeAlertModal();
+            });
+        }
+        document.addEventListener('keydown', function(e){
+            if (e.key === 'Escape') closeAlertModal();
+        });
     })();
     </script>
     
@@ -1793,10 +1928,6 @@
                             <i data-lucide="alert-triangle"></i>
                             Na všechna vyšetření se prosím objednávejte předem!
                         </p>
-                        <p id="hoursAlert" style="display:none; margin-top:10px; padding-top:10px; border-top:1px solid #F59E0B;">
-                            <i data-lucide="info"></i>
-                            <span id="hoursAlertText"></span>
-                        </p>
                     </div>
                     
                     <table class="hours-table">
@@ -1830,8 +1961,8 @@
                             </tr>
                             <tr>
                                 <td><strong>Pátek</strong></td>
-                                <td>8:00 - 13:00</td>
-                                <td>13:00 - 14:00<br><small>(pouze telefonicky a e-mailem)</small></td>
+                                <td>8:00 - 12:00</td>
+                                <td>12:00 - 13:00<br><small>(pouze telefonicky a e-mailem)</small></td>
                             </tr>
                         </tbody>
                     </table>

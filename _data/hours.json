@@ -4,7 +4,7 @@
     { "day": "Úterý", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a e-mailové konzultace)" },
     { "day": "Středa", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a e-mailové konzultace)" },
     { "day": "Čtvrtek", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a e-mailové konzultace)" },
-    { "day": "Pátek", "morning": "8:00 - 13:00", "afternoon": "13:00 - 14:00 (pouze telefonické a e-mailové konzultace)" }
+    { "day": "Pátek", "morning": "8:00 - 12:00", "afternoon": "12:00 - 13:00 (pouze telefonické a e-mailové konzultace)" }
   ],
   "note": ""
 }
